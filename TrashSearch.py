@@ -25,5 +25,8 @@ try:
 		print("[+] Oh no! The email address was pwned =X_X=")
 	else:
 		print("[+] Good news! Could not find the email address =^_^=")
+	print("")
+	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
+	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
 except:
 	print("[-] Unable to reach API")
