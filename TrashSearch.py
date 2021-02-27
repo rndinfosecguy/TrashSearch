@@ -1,6 +1,35 @@
+import time
+from threading import Thread
+import colorama
+from colorama import Fore, Style
 import requests
 import sys
 import argparse
+
+loadingdone = 0
+loadingsymbol = " (╯°□°)╯"
+
+def loadingprogress():
+	global loadingsymbol
+	while loadingdone == 0:
+		print("[*] Checking: " + loadingsymbol, end="\r")
+		if loadingsymbol == " (╯°□°)╯":
+			loadingsymbol = "╰(°□°╰) "
+		elif loadingsymbol == "╰(°□°╰) ":
+			loadingsymbol = " (╯°□°)╯"
+		time.sleep(1)
+
+def checking():
+	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + "&l=1")
+	if r.text == "True":
+		print(Fore.RED + "[+] Oh no! The email address was pwned =X_X=")
+	else:
+		print(Fore.GREEN + "[+] Good news! Could not find the email address =^_^=")
+	print(Style.RESET_ALL)
+	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
+	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
+	global loadingdone
+	loadingdone = 1
 
 descr = """
 MMMMMMMMMMMMMMMMMMMMMMMMNKXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXKNMMMMMMMMMMMMMMMMMMMMMMMMM
@@ -36,13 +65,10 @@ args = parser.parse_args()
 
 try:
 	print("[*] Searching for leaks in TrashPanda OSINT bot API...")
-	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + "&l=1")
-	if r.text == "True":
-		print("[+] Oh no! The email address was pwned =X_X=")
-	else:
-		print("[+] Good news! Could not find the email address =^_^=")
-	print("")
-	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
-	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
+	t = Thread(target=loadingprogress)
+	t.start()
+	t2 = Thread(target=checking)
+	t2.start()
 except:
 	print("[-] Unable to reach API")
+
