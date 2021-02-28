@@ -1,5 +1,5 @@
 # TrashSearch
-Searching the TrashPanda OSINT bot API to check if your email address was leaked or not
+Searching the TrashPanda OSINT bot API to check if your email/domain or password was leaked.
 
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=rndinfosecguy)](https://github.com/anuraghazra/github-readme-stats)
 
@@ -30,15 +30,19 @@ MMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWNKkoc,..              ..,:okKNWWWWWWWWWMMMMMMMMM
 MMMMMMMMMMMMWWNXK00OOkkxxddooollllccc:;,,,,,,,,,,,,,,,,;:ccclllloooddxxkkOO0KKXNWMMMMMMMMMMMM
 MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWMMMMMMMMMMMMMM
 
-usage: TrashSearch.py [-h] -v VALUE [-s SOURCES]
+usage: TrashSearch.py [-h] [-m MODE] -v VALUE [-s SOURCES]
 
-Searching the TrashPanda OSINT bot API to check if your email/domain was
-leaked
+Searching the TrashPanda OSINT bot API to check if your email/domain or
+password was leaked. To avoid abuse the email/domain search does not
+disclose passwords and the password search does not disclose the corresponding
+email/domain.
 
 optional arguments:
   -h, --help            show this help message and exit
+  -m MODE, --mode MODE  Select mode [0 = email/domain search, 1 = password
+                        search] default = 0
   -v VALUE, --value VALUE
-                        email address or domain to check for leaks
+                        email/domain or password to check for leaks
   -s SOURCES, --sources SOURCES
                         data sources to search [g = ghostbin.co, p =
                         pastebin.com, z = 0paste.com]. You can combine
@@ -48,13 +52,15 @@ example usage: python3 TrashSearch.py -v info@example.com -s gz
 ```
 
 ## Hint
-This tool just tells you if your email/domain was identified by the TrashPanda OSINT bot or not. It will not tell you the identified password corresponding to the submitted email address.
+This tool just tells you if your email/domain or password was identified by the TrashPanda OSINT bot. To avoid abuse the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain.
 
 ## Parameters
+- -m: mode to use [0 = email/domain search, 1 = password search]
 - -v: email/domain to check for leaks
 - -s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]
 
 ## Example Usage
 ```console
 python3 TrashSearch.py -v info@example.com -s gz
+python3 TrashSearch.py -m 1 -v 123456 -s g
 ```

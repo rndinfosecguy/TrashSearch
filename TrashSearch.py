@@ -41,6 +41,18 @@ def checking():
 	global loadingdone
 	loadingdone = 1
 
+def checkingpassword():
+	r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources))
+	if r.text == "0":
+		print(Fore.GREEN + "[+] Good news! Could not find the password you submitted =^_^=")
+	else:
+		print(Fore.RED + "[+] Oh no! The password you submitted was pwned " + r.text.strip()  + " times =X_X=")
+	print(Style.RESET_ALL)
+	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
+	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
+	global loadingdone
+	loadingdone = 1
+
 descr = """
 MMMMMMMMMMMMMMMMMMMMMMMMNKXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXKNMMMMMMMMMMMMMMMMMMMMMMMMM
 MMMMMMMMMMMMMMMMMMMMMMMMNo..';cxXMMMMMMMMMMMMMMMMMMMMMMMMMMMWKdc;'..lNMMMMMMMMMMMMMMMMMMMMMMM
@@ -68,8 +80,9 @@ MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWM
 """
 
 print(descr)
-parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email/domain was leaked", epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
-parser.add_argument("-v", "--value", help="email address or domain to check for leaks", required=True)
+parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email/domain or password was leaked." + Fore.YELLOW + " To avoid abuse the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain." + Style.RESET_ALL, epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
+parser.add_argument("-m", "--mode", help="Select mode [0 = email/domain search, 1 = password search] default = 0", default="0")
+parser.add_argument("-v", "--value", help="email/domain or password to check for leaks", required=True)
 parser.add_argument("-s", "--sources", help="data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", default="gpz")
 args = parser.parse_args()
 
@@ -86,8 +99,16 @@ try:
 	print("[*] Searching for leaks in TrashPanda OSINT bot API...")
 	t = Thread(target=loadingprogress)
 	t.start()
-	t2 = Thread(target=checking)
-	t2.start()
+	if args.mode == "0":
+		t2 = Thread(target=checking)
+		t2.start()
+	else:
+		if (args.sources == "p" or args.sources == "z" or args.sources == "g") and args.mode == "1":
+			t2 = Thread(target=checkingpassword)
+			t2.start()
+		else:
+			loadingdone = 1
+			print(Fore.RED + "[-] No valid mode selected!")
 except:
 	print("[-] Unable to reach API")
 
