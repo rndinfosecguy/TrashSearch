@@ -8,15 +8,25 @@ import argparse
 
 loadingdone = 0
 loadingsymbol = " (╯°□°)╯"
+circlesymbol = "|"
 
 def loadingprogress():
+	global circlesymbol
 	global loadingsymbol
 	while loadingdone == 0:
-		print("[*] Checking: " + loadingsymbol, end="\r")
+		print("[" + circlesymbol + "] Checking: " + loadingsymbol, end="\r")
 		if loadingsymbol == " (╯°□°)╯":
 			loadingsymbol = "╰(°□°╰) "
 		elif loadingsymbol == "╰(°□°╰) ":
 			loadingsymbol = " (╯°□°)╯"
+		if circlesymbol == "|":
+			circlesymbol = "/"
+		elif circlesymbol == "/":
+			circlesymbol = "-"
+		elif circlesymbol == "-":
+			circlesymbol = "\\"
+		elif circlesymbol == "\\":
+			circlesymbol = "|"
 		time.sleep(1)
 
 def checking():
