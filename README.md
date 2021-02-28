@@ -28,15 +28,15 @@ MMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWNKkoc,..              ..,:okKNWWWWWWWWWMMMMMMMMM
 MMMMMMMMMMMMWWNXK00OOkkxxddooollllccc:;,,,,,,,,,,,,,,,,;:ccclllloooddxxkkOO0KKXNWMMMMMMMMMMMM
 MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWMMMMMMMMMMMMMM
 
-usage: TrashSearch.py [-h] -v VALUE -s SOURCES
+usage: TrashSearch.py [-h] -v VALUE [-s SOURCES]
 
-Searching the TrashPanda OSINT bot API to check if your email address was
-leaked or not
+Searching the TrashPanda OSINT bot API to check if your email/domain was
+leaked
 
 optional arguments:
   -h, --help            show this help message and exit
   -v VALUE, --value VALUE
-                        email address to check for leaks
+                        email address or domain to check for leaks
   -s SOURCES, --sources SOURCES
                         data sources to search [g = ghostbin.co, p =
                         pastebin.com, z = 0paste.com]. You can combine
