@@ -1,6 +1,8 @@
 # TrashSearch
 Searching the TrashPanda OSINT bot API to check if your email address was leaked or not
 
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=rndinfosecguy)](https://github.com/anuraghazra/github-readme-stats)
+
 ```console
 $ python3 TrashSearch.py -h
 
