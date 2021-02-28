@@ -22,9 +22,9 @@ def loadingprogress():
 def checking():
 	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + "&l=1")
 	if r.text == "True":
-		print(Fore.RED + "[+] Oh no! The email address was pwned =X_X=")
+		print(Fore.RED + "[+] Oh no! The email/domain you submitted was pwned =X_X=")
 	else:
-		print(Fore.GREEN + "[+] Good news! Could not find the email address =^_^=")
+		print(Fore.GREEN + "[+] Good news! Could not find the email/domain you submitted =^_^=")
 	print(Style.RESET_ALL)
 	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
 	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
@@ -58,12 +58,21 @@ MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWM
 """
 
 print(descr)
-parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email address was leaked or not", epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
-parser.add_argument("-v", "--value", help="email address to check for leaks", required=True)
-parser.add_argument("-s", "--sources", help="data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", required=True, default="gpz")
+parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email/domain was leaked", epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
+parser.add_argument("-v", "--value", help="email address or domain to check for leaks", required=True)
+parser.add_argument("-s", "--sources", help="data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", default="gpz")
 args = parser.parse_args()
 
 try:
+	print()
+	datasources = ""
+	if "g" in args.sources:
+		datasources += "[ghostbin.co] "
+	if "z" in args.sources:
+		datasources += "[0paste.com] "
+	if "p" in args.sources:
+		datasources += "[pastebin.com]"
+	print("[+] Selected data sources: " + datasources)
 	print("[*] Searching for leaks in TrashPanda OSINT bot API...")
 	t = Thread(target=loadingprogress)
 	t.start()
