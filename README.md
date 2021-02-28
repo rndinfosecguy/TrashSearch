@@ -55,9 +55,9 @@ example usage: python3 TrashSearch.py -v info@example.com -s gz
 This tool just tells you if your email/domain or password was identified by the TrashPanda OSINT bot. To avoid abuse the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain.
 
 ## Parameters
-- -m: mode to use [0 = email/domain search, 1 = password search]
-- -v: email/domain to check for leaks
-- -s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]
+- m: mode to use [0 = email/domain search, 1 = password search]
+- v: email/domain to check for leaks
+- s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]
 
 ## Example Usage
 ```console
