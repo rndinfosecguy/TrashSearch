@@ -83,7 +83,7 @@ print(descr)
 parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email/domain or password was leaked." + Fore.YELLOW + " To avoid abuse the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain." + Style.RESET_ALL, epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
 parser.add_argument("-m", "--mode", help="Select mode [0 = email/domain search, 1 = password search] default = 0", default="0")
 parser.add_argument("-v", "--value", help="email/domain or password to check for leaks", required=True)
-parser.add_argument("-s", "--sources", help="data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", default="gpz")
+parser.add_argument("-s", "--sources", help="data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. If you are using email/domain search mode, you can combine sources. example: '-s gz'. default = gpz", default="gpz")
 args = parser.parse_args()
 
 try:
