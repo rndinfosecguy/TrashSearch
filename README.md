@@ -46,10 +46,10 @@ example usage: python3 TrashSearch.py -v info@example.com -s gz
 ```
 
 ## Hint
-This tool just tells you if your email address was identified by the TrashPanda OSINT bot or not. It will not tell you the identified password corresponding to the submitted email address.
+This tool just tells you if your email/domain was identified by the TrashPanda OSINT bot or not. It will not tell you the identified password corresponding to the submitted email address.
 
 ## Parameters
-- -v: email address to check for leaks
+- -v: email/domain to check for leaks
 - -s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]
 
 ## Example Usage
