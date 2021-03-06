@@ -62,5 +62,5 @@ This tool just tells you if your email/domain or password was identified by the 
 ## Example Usage
 ```console
 python3 TrashSearch.py -v info@example.com -s gz
-python3 TrashSearch.py -m 1 -v 123456 -s g
+python3 TrashSearch.py -m 1 -v 123456
 ```
