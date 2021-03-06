@@ -45,9 +45,8 @@ optional arguments:
                         email/domain or password to check for leaks
   -s SOURCES, --sources SOURCES
                         data sources to search [g = ghostbin.co, p =
-                        pastebin.com, z = 0paste.com]. If you are using
-                        email/domain search mode, you can combine sources.
-                        example: '-s gz'. default = gpz
+                        pastebin.com, z = 0paste.com]. You can combine
+                        sources. example: '-s gz'. default = gpz
 
 example usage: python3 TrashSearch.py -v info@example.com -s gz
 ```
@@ -58,7 +57,7 @@ This tool just tells you if your email/domain or password was identified by the 
 ## Parameters
 - m: mode to use [0 = email/domain search, 1 = password search]
 - v: depends on the mode what kind of value is expected here. Mode 0 expects an email/domain and mode 1 expects a password.
-- s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. If you are using email/domain search mode you can combine data sources.
+- s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine data sources.
 
 ## Example Usage
 ```console
