@@ -5,10 +5,15 @@ from colorama import Fore, Style
 import requests
 import sys
 import argparse
+from base64 import b64encode
 
 loadingdone = 0
 loadingsymbol = " (╯°□°)╯"
 circlesymbol = "|"
+username = "anonymous"
+password = "Uh324)nwh64AL"
+userAndPass = username + ":" + password
+userAndPass = b64encode(userAndPass.encode()).decode("ascii")
 
 def loadingprogress():
 	global circlesymbol
@@ -30,7 +35,7 @@ def loadingprogress():
 		time.sleep(1)
 
 def checking():
-	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + "&l=1")
+	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + "&l=1", headers={"Authorization":"Basic " + userAndPass})
 	if r.text == "True":
 		print(Fore.RED + "[+] Oh no! The email/domain you submitted was pwned =X_X=")
 	else:
@@ -43,19 +48,19 @@ def checking():
 
 def checkingpassword():
 	if "z" in args.sources:
-		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=z")
+		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=z", headers={"Authorization":"Basic " + userAndPass})
 		if r.text == "0":
 			print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on 0paste.com =^_^=" + Style.RESET_ALL)
 		else:
 			print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on 0paste.com " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
 	if "g" in args.sources:
-		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=g")
+		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=g", headers={"Authorization":"Basic " + userAndPass})
 		if r.text == "0":
 			print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on ghostbin.co =^_^=" + Style.RESET_ALL)
 		else:
 			print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on ghostbin.co " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
 	if "p" in args.sources:
-		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=p")
+		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=p", headers={"Authorization":"Basic " + userAndPass})
 		if r.text == "0":
 			print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on pastebin.com =^_^=" + Style.RESET_ALL)
 		else:
