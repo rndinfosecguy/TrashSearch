@@ -54,7 +54,7 @@ example usage: python3 TrashSearch.py -v info@example.com -s gz
 ## Intro and Configuration
 This tool tells you if your email/domain or password was identified by the TrashPanda OSINT bot.
 
-The tool works out of the box with anonymous credentials provided inside the auth.conf file. To avoid abuse, in this configuration, the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain.
+The tool works out of the box with anonymous credentials provided inside the auth.conf file. To avoid abuse the anonymous email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain.
 
 auth.conf:
 ```
