@@ -51,10 +51,20 @@ optional arguments:
 example usage: python3 TrashSearch.py -v info@example.com -s gz
 ```
 
-## Hint
+## Intro and Configuration
 This tool tells you if your email/domain or password was identified by the TrashPanda OSINT bot.
 
-To avoid abuse the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain.
+The tool works out of the box with anonymous credentials provided inside the auth.conf file. To avoid abuse, in this configuration, the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain.
+
+auth.conf:
+```
+username=anonymous
+password=Uh324)nwh64AL
+```
+
+If you are a whitehat researcher and I granted you access to the TrashPanda API, you can subsitute the anonymous credentials inside auth.conf with your login information to get raw leak data when using this tool.
+
+You are a whitehat researcher but I did not grant you access to the TrashPanda API so far? Visit https://got-hacked.wtf/ for more information
 
 ## Parameters
 - m: mode to use [0 = email/domain search, 1 = password search]
