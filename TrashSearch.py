@@ -10,8 +10,17 @@ from base64 import b64encode
 loadingdone = 0
 loadingsymbol = " (╯°□°)╯"
 circlesymbol = "|"
-username = "anonymous"
-password = "Uh324)nwh64AL"
+
+username = ""
+password = ""
+with open("auth.conf", "r") as f:
+	tmpContent = f.readlines()
+for line in tmpContent:
+	line = line.strip()
+	if "username" in line:
+		username = line.split("username=")[1]
+	if "password" in line:
+		password = line.split("password=")[1]
 userAndPass = username + ":" + password
 userAndPass = b64encode(userAndPass.encode()).decode("ascii")
 
@@ -35,36 +44,69 @@ def loadingprogress():
 		time.sleep(1)
 
 def checking():
-	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + "&l=1", headers={"Authorization":"Basic " + userAndPass})
-	if r.text == "True":
-		print(Fore.RED + "[+] Oh no! The email/domain you submitted was pwned =X_X=")
+	limit = ""
+	if username == "anonymous":
+		limit = "&l=1"
+	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + limit, headers={"Authorization":"Basic " + userAndPass})
+	if r.status_code != 401:
+		if username == "anonymous":
+			if r.text == "True":
+				print(Fore.RED + "[+] Oh no! The email/domain you submitted was pwned =X_X=" + Style.RESET_ALL)
+			else:
+				print(Fore.GREEN + "[+] Good news! Could not find the email/domain you submitted =^_^=" + Style.RESET_ALL)
+		else:
+			if r.text == "False":
+				print(Fore.GREEN + "[+] Good news! Could not find the email/domain you submitted =^_^=" + Style.RESET_ALL)
+			else:
+				print("                                      ")
+				responseContent = r.text.strip()
+				responseContent = responseContent.split(")(")
+				for item in responseContent:
+					item = item.split(",")
+					uitem = item[0].split("'")[1]
+					ditem = item[1].split("'")[1]
+					pitem = item[2].split("'")[1]
+					print(Fore.YELLOW + "\t" + uitem + "@" + ditem + ":" + pitem + Style.RESET_ALL)
 	else:
-		print(Fore.GREEN + "[+] Good news! Could not find the email/domain you submitted =^_^=")
-	print(Style.RESET_ALL)
+		print(Fore.RED + "[-] UNAUTHORIZED! Does your auth.conf file contain valid credentials? (default=anonymous:Uh324)nwh64AL)" + Style.RESET_ALL)
+
+	print()
 	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
 	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
 	global loadingdone
 	loadingdone = 1
 
 def checkingpassword():
+	authenticated = 1
 	if "z" in args.sources:
 		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=z", headers={"Authorization":"Basic " + userAndPass})
-		if r.text == "0":
-			print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on 0paste.com =^_^=" + Style.RESET_ALL)
+		if r.status_code != 401:
+			if r.text == "0":
+				print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on 0paste.com =^_^=" + Style.RESET_ALL)
+			else:
+				print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on 0paste.com " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
 		else:
-			print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on 0paste.com " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
+			authenticated = 0
 	if "g" in args.sources:
 		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=g", headers={"Authorization":"Basic " + userAndPass})
-		if r.text == "0":
-			print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on ghostbin.co =^_^=" + Style.RESET_ALL)
+		if r.status_code != 401:
+			if r.text == "0":
+				print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on ghostbin.co =^_^=" + Style.RESET_ALL)
+			else:
+				print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on ghostbin.co " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
 		else:
-			print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on ghostbin.co " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
+			authenticated = 0
 	if "p" in args.sources:
 		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=p", headers={"Authorization":"Basic " + userAndPass})
-		if r.text == "0":
-			print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on pastebin.com =^_^=" + Style.RESET_ALL)
+		if r.status_code != 401:
+			if r.text == "0":
+				print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on pastebin.com =^_^=" + Style.RESET_ALL)
+			else:
+				print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on pastebin.com " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
 		else:
-			print(Fore.RED + "[+] Oh no! The password you submitted was pwned and published on pastebin.com " + r.text.strip()  + " times =X_X=" + Style.RESET_ALL)
+			authenticated = 0
+	if authenticated == 0:
+		print(Fore.RED + "[-] UNAUTHORIZED! Does your auth.conf file contain valid credentials? (default=anonymous:Uh324)nwh64AL)" + Style.RESET_ALL)
 	print()
 	print("[*] Wanna see some stats? http://stats.got-hacked.wtf:6780/")
 	print("[*] You are a security researcher and need more information? https://got-hacked.wtf/")
@@ -106,6 +148,7 @@ args = parser.parse_args()
 
 try:
 	print()
+	print("[+] Loaded API authentication details for " + Fore.BLUE + username + Style.RESET_ALL)
 	datasources = ""
 	if "g" in args.sources:
 		datasources += "[ghostbin.co] "
