@@ -30,12 +30,12 @@ MMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWNKkoc,..              ..,:okKNWWWWWWWWWMMMMMMMMM
 MMMMMMMMMMMMWWNXK00OOkkxxddooollllccc:;,,,,,,,,,,,,,,,,;:ccclllloooddxxkkOO0KKXNWMMMMMMMMMMMM
 MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWMMMMMMMMMMMMMM
 
-usage: TrashSearch.py [-h] [-m MODE] -v VALUE [-s SOURCES]
+usage: TrashSearch.py [-h] [-m MODE] -v VALUE [-w] [-s SOURCES]
 
 Searching the TrashPanda OSINT bot API to check if your email/domain or
-password was leaked. To avoid abuse the email/domain search does not
-disclose passwords and the password search does not disclose the corresponding
-email/domain.
+password was leaked. To avoid abuse (when running as anonymous user) the
+email/domain search does not disclose passwords and the password search does
+not disclose the corresponding email/domain.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -43,8 +43,11 @@ optional arguments:
                         search] default = 0
   -v VALUE, --value VALUE
                         email/domain or password to check for leaks
+  -w, --wildcard        Enables wildcard mode when searching a domain. Adds a
+                        wildcard in front of the target domain (e.g.:
+                        *example.com) to also check for subdomains.
   -s SOURCES, --sources SOURCES
-                        data sources to search [g = ghostbin.co, p =
+                        Data sources to search [g = ghostbin.co, p =
                         pastebin.com, z = 0paste.com]. You can combine
                         sources. example: '-s gz'. default = gpz
 
@@ -69,6 +72,7 @@ You are a whitehat researcher but I did not grant you access to the TrashPanda A
 ## Parameters
 - m: mode to use [0 = email/domain search, 1 = password search]
 - v: depends on the mode what kind of value is expected here. Mode 0 expects an email/domain and mode 1 expects a password.
+- w: enables wildcard search when combined with a domain search. Adds a wildcard in front of the target domain (e.g.: *example.com).
 - s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine data sources.
 
 ## Example Usage
