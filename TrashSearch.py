@@ -46,7 +46,13 @@ def loadingprogress():
 def checking():
 	limit = ""
 	if username == "anonymous":
-		limit = "&l=1"
+		limit += "&l=1"
+	if args.wildcard:
+		if "@" in args.value:
+			print(Fore.YELLOW + "[#] Wildcard mode is only available when performing a domain search. Ignoring -w/--wildcard switch." + Style.RESET_ALL)
+		else:
+			print(Fore.GREEN + "[+] Wildcard mode enabled." + Style.RESET_ALL)
+			limit += "&w"
 	r =requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" + requests.utils.quote(args.sources) + limit, headers={"Authorization":"Basic " + userAndPass})
 	if r.status_code != 401:
 		if username == "anonymous":
@@ -77,6 +83,9 @@ def checking():
 	loadingdone = 1
 
 def checkingpassword():
+	if args.wildcard:
+		print(Fore.YELLOW + "[#] Wildcard mode is only available when performing a domain search. Ignoring -w/--wildcard switch." + Style.RESET_ALL)
+
 	authenticated = 1
 	if "z" in args.sources:
 		r =requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=z", headers={"Authorization":"Basic " + userAndPass})
@@ -140,10 +149,11 @@ MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWM
 """
 
 print(descr)
-parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email/domain or password was leaked." + Fore.YELLOW + " To avoid abuse the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain." + Style.RESET_ALL, epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
+parser = argparse.ArgumentParser(description="Searching the TrashPanda OSINT bot API to check if your email/domain or password was leaked." + Fore.YELLOW + " To avoid abuse (when running as anonymous user) the email/domain search does not disclose passwords and the password search does not disclose the corresponding email/domain." + Style.RESET_ALL, epilog="example usage: python3 " + sys.argv[0] + " -v info@example.com -s gz")
 parser.add_argument("-m", "--mode", help="Select mode [0 = email/domain search, 1 = password search] default = 0", default="0")
 parser.add_argument("-v", "--value", help="email/domain or password to check for leaks", required=True)
-parser.add_argument("-s", "--sources", help="data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", default="gpz")
+parser.add_argument("-w", "--wildcard", help="Enables wildcard mode when searching a domain. Adds a wildcard in front of the target domain (e.g.: *example.com) to also check for subdomains.", action="store_true")
+parser.add_argument("-s", "--sources", help="Data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", default="gpz")
 args = parser.parse_args()
 
 try:
@@ -175,3 +185,4 @@ try:
 		print(Fore.RED + "[-] No valid mode selected!")
 except:
 	print("[-] Unable to reach API")
+
