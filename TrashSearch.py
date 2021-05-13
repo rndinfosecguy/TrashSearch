@@ -55,8 +55,12 @@ def checking():
 		else:
 			print(Fore.GREEN + "[+] Wildcard mode enabled." + Style.RESET_ALL)
 			limit += "&w"
-	r = requests.get("http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value) + "&s=" +
-					 requests.utils.quote(args.sources) + limit, headers={"Authorization": "Basic " + userAndPass})
+
+	checkurl = "http://api.got-hacked.wtf:7230/pwned?v=" + requests.utils.quote(args.value)
+	checkurl += "&s=" + requests.utils.quote(args.sources)
+	checkurl += limit
+	r = requests.get(checkurl, headers={"Authorization": "Basic " + userAndPass})
+
 	if r.status_code != 401:
 		if username == "anonymous":
 			if r.text == "True":
@@ -94,8 +98,10 @@ def checkingpassword():
 
 	authenticated = 1
 	if "z" in args.sources:
-		r = requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=z",
-						 headers={"Authorization": "Basic " + userAndPass})
+		checkurl = "http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value)
+		checkurl += "&s=z"
+		r = requests.get(checkurl, headers={"Authorization": "Basic " + userAndPass})
+
 		if r.status_code != 401:
 			if r.text == "0":
 				print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on 0paste.com =^_^=" + Style.RESET_ALL)
@@ -105,8 +111,10 @@ def checkingpassword():
 		else:
 			authenticated = 0
 	if "g" in args.sources:
-		r = requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=g",
-						 headers={"Authorization": "Basic " + userAndPass})
+		checkurl = "http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value)
+		checkurl += "&s=g"
+		r = requests.get(checkurl, headers={"Authorization": "Basic " + userAndPass})
+
 		if r.status_code != 401:
 			if r.text == "0":
 				print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on ghostbin.co =^_^=" +
@@ -117,8 +125,10 @@ def checkingpassword():
 		else:
 			authenticated = 0
 	if "p" in args.sources:
-		r = requests.get("http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value) + "&s=p",
-						 headers={"Authorization": "Basic " + userAndPass})
+		checkurl = "http://api.got-hacked.wtf:7230/pwd?v=" + requests.utils.quote(args.value)
+		checkurl += "&s=p"
+		r = requests.get(checkurl, headers={"Authorization": "Basic " + userAndPass})
+
 		if r.status_code != 401:
 			if r.text == "0":
 				print(Fore.GREEN + "[+] Good news! Could not find the password you submitted on pastebin.com =^_^=" +
@@ -166,19 +176,26 @@ MMMMMMMMMMMMMMMWWWWWWNNNNNNXXXXXXXXKKKKKKKKKKKKKKKKKKKKKKKXXXXXXXXXNNNNNNWWWWWWM
 
 print(descr)
 programdescription = "Searching the TrashPanda OSINT bot API to check if your email/domain or password was leaked."
-programdescription += Fore.YELLOW + " To avoid abuse (when running as anonymous user) the email/domain search does " \
-									"not disclose passwords and the password search does not disclose the " \
-									"corresponding email/domain." + Style.RESET_ALL
+programdescription += Fore.YELLOW + " To avoid abuse (when running as anonymous user) the email/domain search does "
+programdescription += "not disclose passwords and the password search does not disclose the "
+programdescription += "corresponding email/domain." + Style.RESET_ALL
+
 programepilog = "example usage: python3 " + sys.argv[0] + "-v info@example.com -s gz"
+
 parser = argparse.ArgumentParser(description=programdescription, epilog=programepilog)
-parser.add_argument("-m", "--mode", help="Select mode [0 = email/domain search, 1 = password search] default = 0",
-					default="0")
+
+arghelp = "Select mode [0 = email/domain search, 1 = password search] default = 0"
+parser.add_argument("-m", "--mode", help=arghelp, default="0")
+
 parser.add_argument("-v", "--value", help="email/domain or password to check for leaks", required=True)
-parser.add_argument("-w", "--wildcard", help="Enables wildcard mode when searching a domain. Adds a wildcard in front"
-					"of the target domain (e.g.: *example.com) to also check for subdomains.", action="store_true")
-parser.add_argument("-s", "--sources", help="Data sources to search [g = ghostbin.co, p = pastebin.com, "
-											"z = 0paste.com]. You can combine sources. example: '-s gz'. default = "
-											"gpz", default="gpz")
+
+arghelp = "Enables wildcard mode when searching a domain. Adds a wildcard in front of the target domain"
+arghelp += "(e.g.: *example.com) to also check for subdomains."
+parser.add_argument("-w", "--wildcard", help=arghelp, action="store_true")
+
+arghelp = "Data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]."
+arghelp += "You can combine sources. example: '-s gz'. default = gzp"
+parser.add_argument("-s", "--sources", help=arghelp, default="gpz")
 args = parser.parse_args()
 
 try:
