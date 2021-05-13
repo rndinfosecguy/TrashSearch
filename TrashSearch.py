@@ -169,15 +169,16 @@ programdescription = "Searching the TrashPanda OSINT bot API to check if your em
 programdescription += Fore.YELLOW + " To avoid abuse (when running as anonymous user) the email/domain search does " \
 									"not disclose passwords and the password search does not disclose the " \
 									"corresponding email/domain." + Style.RESET_ALL
-parser = argparse.ArgumentParser(description=programdescription, epilog="example usage: python3 " + sys.argv[0] + " -v "
-																								 "info@example.com -s gz")
+programepilog = "example usage: python3 " + sys.argv[0] + "-v info@example.com -s gz"
+parser = argparse.ArgumentParser(description=programdescription, epilog=programepilog)
 parser.add_argument("-m", "--mode", help="Select mode [0 = email/domain search, 1 = password search] default = 0",
 					default="0")
 parser.add_argument("-v", "--value", help="email/domain or password to check for leaks", required=True)
 parser.add_argument("-w", "--wildcard", help="Enables wildcard mode when searching a domain. Adds a wildcard in front"
 					"of the target domain (e.g.: *example.com) to also check for subdomains.", action="store_true")
 parser.add_argument("-s", "--sources", help="Data sources to search [g = ghostbin.co, p = pastebin.com, "
-											"z = 0paste.com]. You can combine sources. example: '-s gz'. default = gpz", default="gpz")
+											"z = 0paste.com]. You can combine sources. example: '-s gz'. default = "
+											"gpz", default="gpz")
 args = parser.parse_args()
 
 try:
