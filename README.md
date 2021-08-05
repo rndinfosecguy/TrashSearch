@@ -76,8 +76,22 @@ You are a whitehat researcher but I did not grant you access to the TrashPanda A
 - s: data sources to search [g = ghostbin.co, p = pastebin.com, z = 0paste.com]. You can combine data sources.
 
 ## Example Usage
+Lookup if info@example.com got pwned and published on ghostbin.co or 0paste.com
 ```console
 python3 TrashSearch.py -v info@example.com -s gz
+```
+
+Lookup if accounts from the domain example.com got pwned and published on ghostbin.co, 0paste.com or pastebin.com
+```console
 python3 TrashSearch.py -v example.com 
+```
+
+Lookup if accounts from the domain example.com and all its subdomains got pwned and published on ghostbin.co, 0paste.com or pastebin.com
+```console
+python3 TrashSearch.py -v example.com -w
+```
+
+Lookup if the password 123456 was published in credential leaks on ghostbin.co, 0paste.com or pastebin.com
+```console
 python3 TrashSearch.py -m 1 -v 123456
 ```
