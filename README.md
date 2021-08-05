@@ -78,5 +78,6 @@ You are a whitehat researcher but I did not grant you access to the TrashPanda A
 ## Example Usage
 ```console
 python3 TrashSearch.py -v info@example.com -s gz
+python3 TrashSearch.py -v example.com 
 python3 TrashSearch.py -m 1 -v 123456
 ```
